@@ -1699,16 +1699,17 @@ void test() {
 	vector<string> a;
 	vector<string> b;
 	getFiles(cur_path, a,b);
-	for (int j = 8; j < a.size();++j) {
+	for (int j =1; j < 2;++j) {
 		string x = a[j];
 		//cout << x << endl;
-		const char* result_path = ("results\\sol_" + b[j]).data();
+		const char* result_path = ("solutions\\sol_" + b[j]).data();
 		//cout << result_path << endl;
 		ofstream fout;
-		fout.open(result_path, ios::ate);
-		for (int i = 0; i < 10; ++i) {
-			cout << x << "第" << i + 1 << "次：" << endl;
-			fout << x << "第" << i+1 << "次：" << endl;
+		fout.open(result_path, ios::app);
+        dead_space_best = 1.0;
+		while (dead_space_best>=0.05) {
+			//cout << x << "第" << i + 1 << "次：" << endl;
+			//fout << x << "第" << i+1 << "次：" << endl;
 			time_re.restart();
 			const char *filepath = x.data();
 			//cout << filepath << endl;
@@ -1733,29 +1734,37 @@ void test() {
 			block_count = rectilinear.size();
 			SA(1000.0, 0.1, 100);
 			time_re.stop();
-			fout << "dead_space:" << dead_space_best << "," << "best_rito:" << best_rito << "," << "get_best_time:" << get_best_time << endl;
-			cout << endl;
+			//fout << "dead_space:" << dead_space_best << "," << "best_rito:" << best_rito << "," << "get_best_time:" << get_best_time << endl;
+            fout << "dead_space:" << dead_space_best << "," << "best_rito:" << best_rito << "," << "get_best_time:" << get_best_time << endl;
+            for (const auto& x : af_part_best) {
+                for (const auto& y : x) {
+                    for (const auto& z : y)
+                        fout << z.a[0] << "," << z.a[1] << " ";
+                    fout << endl;
+                }
+            }
+            fout << endl;
 		}
 		fout.close();
 	}
 }
 
 int main(int argc, char* argv[]) {
-    char filepath[] = "inputPolys\\ami33_lt_Ma.txt";
-    getfile(filepath);
-    //rotate_c(rectilinear[13], 270);
-    init_partition();
-    create_top_profile_seq();
-    af_part1 = af_part;
-    for (int i = 0; i < af_part1.size(); i++) {
-        vector<int> temp(af_part1[i].size(), 0);
-        is_visted.push_back(temp);
-    }
-    area.resize(rectilinear.size(), 0);
-    block_count = rectilinear.size();
-    SA(1000.0, 0.1, 100);
-	//test();
-    cout << rectilinear.size() << endl;
+ //   char filepath[] = "inputPolys\\ami33_lt_Ma.txt";
+ //   getfile(filepath);
+ //   //rotate_c(rectilinear[13], 270);
+ //   init_partition();
+ //   create_top_profile_seq();
+ //   af_part1 = af_part;
+ //   for (int i = 0; i < af_part1.size(); i++) {
+ //       vector<int> temp(af_part1[i].size(), 0);
+ //       is_visted.push_back(temp);
+ //   }
+ //   area.resize(rectilinear.size(), 0);
+ //   block_count = rectilinear.size();
+ //   SA(1000.0, 0.1, 100);
+      test();
+ //   cout << rectilinear.size() << endl;
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE);
     glutInitWindowPosition(100, 100);
@@ -1765,10 +1774,10 @@ int main(int argc, char* argv[]) {
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
     glutMainLoop();
-    cout << "ok" << endl;
-    cout << "ok1" << endl;
-    cout << "ok1" << endl;
-    return 0;
+ //   cout << "ok" << endl;
+ //   cout << "ok1" << endl;
+ //   cout << "ok1" << endl;
+ //   return 0;
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
