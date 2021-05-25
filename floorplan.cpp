@@ -754,19 +754,29 @@ void myDisplay(void)
     int ortho = max(best_x, best_y);
     gluOrtho2D(-1, ortho, -1, ortho);
     int i = 0;
+    glPolygonMode(GL_FRONT, GL_LINE);
+    glPolygonMode(GL_BACK, GL_FILL);
     for (auto x : af_part_best) {
-        if (i % 3 == 0)
+        /*if (i % 3 == 0)
             glColor3f(0.0, 0.0, 1.0);
         if (i % 3 == 1)
             glColor3f(0.0, 1.0, 0.0);
         if (i % 3 == 2)
             glColor3f(1.0, 0.0, 0.0);
-        i++;
+        i++;*/
         for (auto y : x) {
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            glColor3f(0.0, 0.0, 1.0);
             glBegin(GL_POLYGON);
             for (auto z : y)
                 glVertex2i(z.a[0], z.a[1]);
+            glEnd();
+        }
+        for (auto y : x) {
+            glColor3f(0.0, 1.0, 0.0);
+            glBegin(GL_POLYGON);
+            for (int j = y.size() - 1; j >= 0; --j) {
+                glVertex2i(y[j].a[0], y[j].a[1]);
+            }
             glEnd();
         }
     }
@@ -1731,7 +1741,7 @@ void test() {
 }
 
 int main(int argc, char* argv[]) {
-    char filepath[] = "inputPolys\\polygon_area_etc_input_1.txt";
+    char filepath[] = "inputPolys\\ami33_lt_Ma.txt";
     getfile(filepath);
     //rotate_c(rectilinear[13], 270);
     init_partition();
