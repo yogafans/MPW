@@ -1699,7 +1699,7 @@ void test() {
 	vector<string> a;
 	vector<string> b;
 	getFiles(cur_path, a,b);
-	for (int j =1; j < 2;++j) {
+	for (int j =2; j < 3;++j) {
 		string x = a[j];
 		//cout << x << endl;
 		const char* result_path = ("solutions\\sol_" + b[j]).data();
@@ -1707,7 +1707,7 @@ void test() {
 		ofstream fout;
 		fout.open(result_path, ios::app);
         dead_space_best = 1.0;
-		while (dead_space_best>=0.05) {
+		while (dead_space_best>=0.09) {
 			//cout << x << "第" << i + 1 << "次：" << endl;
 			//fout << x << "第" << i+1 << "次：" << endl;
 			time_re.restart();
