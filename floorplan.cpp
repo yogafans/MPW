@@ -1444,7 +1444,7 @@ void SA(double T0,double Tmin, int k) {
     int incre_count = 0;
     int choose_count = block_count / 10;
     int change_mode_iter = 3 * int(T0);
-    while (count_while < 10) {
+    while (count_while < 1) {
         int iter3 = 0;
 		iter2 = 0;
         //incre_count = 0;
@@ -1463,6 +1463,8 @@ void SA(double T0,double Tmin, int k) {
             Not_update_count = 0;
             dead_space = 1.0;
         }
+        ofstream fout;
+        fout.open("record_T.txt", ios::ate);
         while (T >= Tmin) {
             s2.restart();
             for (int i = 0; i < k; ++i) {
@@ -1640,9 +1642,10 @@ void SA(double T0,double Tmin, int k) {
             iter++;
             if (iter <= change_mode_iter) {
                 T = T0 / (1.0 + 2.0 * double(iter));
+                //T *= 0.99;
             }
             else {
-                if ((dead_space - dead_space_best) < 0.001/*Not_update_count>100000*/) {
+                if ((dead_space - dead_space_best) < 0.01/*Not_update_count>100000*/) {
                     ++incre_count;
                     T *= 1.01;
                 }
@@ -1652,9 +1655,11 @@ void SA(double T0,double Tmin, int k) {
 
             }
             //T *= 0.99;
+            fout << iter << "," << T << endl;
             s2.stop();
             //cout << k << "次用时:" << s2.elapsed_ms() <<"ms"<< endl;
         }
+        fout.close();
         ++count_while;
     }
     cout << "dead_space:" << dead_space_best << endl;
@@ -1750,20 +1755,20 @@ void test() {
 }
 
 int main(int argc, char* argv[]) {
- //   char filepath[] = "inputPolys\\ami33_lt_Ma.txt";
- //   getfile(filepath);
- //   //rotate_c(rectilinear[13], 270);
- //   init_partition();
- //   create_top_profile_seq();
- //   af_part1 = af_part;
- //   for (int i = 0; i < af_part1.size(); i++) {
- //       vector<int> temp(af_part1[i].size(), 0);
- //       is_visted.push_back(temp);
- //   }
- //   area.resize(rectilinear.size(), 0);
- //   block_count = rectilinear.size();
- //   SA(1000.0, 0.1, 100);
-      test();
+    char filepath[] = "inputPolys\\ami33_lt_Ma.txt";
+    getfile(filepath);
+    //rotate_c(rectilinear[13], 270);
+    init_partition();
+    create_top_profile_seq();
+    af_part1 = af_part;
+    for (int i = 0; i < af_part1.size(); i++) {
+        vector<int> temp(af_part1[i].size(), 0);
+        is_visted.push_back(temp);
+    }
+    area.resize(rectilinear.size(), 0);
+    block_count = rectilinear.size();
+    SA(1000.0, 0.1, 100);
+      //test();
  //   cout << rectilinear.size() << endl;
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE);
